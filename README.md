@@ -446,7 +446,7 @@ Where:
 
 ## Hold call scenario (hold from UAC)
 
-The folder `Hold-UAC` contains UAS and UAC scenarios for call hold using the [RFC 3264](https://tools.ietf.org/html/rfc3264) specification (`a=sendonly/recvonly`).
+The folder [Hold-UAC](Hold-UAC) contains UAS and UAC scenarios for call hold using the [RFC 3264](https://tools.ietf.org/html/rfc3264) specification (`a=sendonly/recvonly`).
 
 In this scenario the UAC sends the first INVITE, and the hold and retrieve re-INVITEs.
 
@@ -480,7 +480,7 @@ Where:
 
 ## Hold call scenario (hold from UAS)
 
-This scenario is a little bit different from the previous one: in this case the hold re-INVITE is send by the UAS. For this reason the UAS need to save the original `From` header and the `Contact` URI from the UAC request.
+The scenario in the [Hold-UAS](Hold-UAS) folder is a little bit different from the previous one: in this case the hold re-INVITE is send by the UAS. For this reason the UAS need to save the original `From` header and the `Contact` URI from the UAC request.
 
 ### The UAS
 
@@ -515,7 +515,7 @@ Where:
 
 ## UAS MWI notification
 
-**Scenario file:** [MWI-unsolicited/uas-mwi.xml](MWI-unsolicited/uas-mwi.xml]
+**Scenario file:** [MWI-unsolicited/uas-mwi.xml](MWI-unsolicited/uas-mwi.xml)
 
 This scenario accepts an UAC registration, the scenario accepts the REGISTER and then sends some unsolicited NOTIFY containing the MWI notification.
 
