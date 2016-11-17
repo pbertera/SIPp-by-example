@@ -351,7 +351,7 @@ In a `recv`, `recvCmd` or `nop` command you can execute one or more actions:
     </scenario> 
     ```
 
-**NOTE: Both UAC and UAS scenario can be found into the Basic folder**
+**NOTE: Both UAC and UAS scenario can be found into the Basic folder: [Basic/uac.xml](Basic/uac.xml) and [Basic/uas.xml](Basic/uas.xml)**
 
 # Specific for SIPp and Snom phones
 
@@ -368,11 +368,13 @@ If you want to call an UAS scenario from a Snom phone the simplest way is to con
 
 ## Active Media call scenario
 
-The folder `Active-Media` contains UAS and UAC scenarios for Active media negotiation (SDP offer sent into the INVITE request).
+The folder [Active-Media](Active-Media) contains UAS and UAC scenarios for Active media negotiation (SDP offer sent into the INVITE request).
 
 The UAC is responsible for the dialog creation and closure.
 
 ### The UAS
+
+**Scenario file:** [Active-Media/uas-active.xml](Active-Media/uas-active.xml)
 
 Since the UAS scenario is playing a PCAP file, SIPp should run with a priviledged user.
 
@@ -384,6 +386,8 @@ Where:
 * **<local_port** is the local SIP port
 
 ### The UAC
+
+**Scenario file:** [Active-Media/uac-active.xml](Active-Media/uac-active.xml)
 
 `sudo sipp -sf Active-Media/uac-active.xml -m 1 -s <service> -i <local_ip> <remote_ip>:<remote_port>`
 
@@ -410,11 +414,13 @@ and then add the `-rtp_echo` option to the SIPp command line
 
 ## Passive Media call scenarios
 
-The folder `Passive-Media` contains UAS and UAC scenarios for Passive media negotiation (SDP offer sent into the `200 OK`).
+The folder [Passive-Media](Passive-Media) contains UAS and UAC scenarios for Passive media negotiation (SDP offer sent into the `200 OK`).
 
 The UAC is responsible for the dialog creation and closure.
 
 ### The UAS
+
+**Scenario file:** [Passive-Media/uas-passive.xml](Passive-Media/uas-passive.xml)
 
 Since the UAS scenario is playing a PCAP file should run with a proviledged user.
 
@@ -426,6 +432,8 @@ Where:
 * **<local_port** is the local SIP port
 
 ### The UAC
+
+**Scenario file:** [Passive-Media/uac-passive.xml](Passive-Media/uac-passive.xml)
 
 `sudo sipp -sf Passive-Media/uac-passive.xml -m 1 -s <service> -i <local_ip> <remote_ip>:<remote_port>`
 
@@ -444,6 +452,8 @@ In this scenario the UAC sends the first INVITE, and the hold and retrieve re-IN
 
 ### The UAS
 
+**Scenario file:** [Hold-UAC/uas-hold.xml](Hold-UAC/uas-hold.xml)
+
 Since the UAS scenario is playing a PCAP file should run with a proviledged user.
 
 `sudo sipp -sf Hold-UAC/uas-hold.xml -i <local_ip> -p <local_port> -m 1`
@@ -456,6 +466,8 @@ Where:
 The scenario expects 2 re-INVITE from the UAC (first putting the call on hold and second retrieving the call).
 
 ### The UAC
+
+**Scenario file:** [Hold-UAC/uac-hold.xml](Hold-UAC/uac-hold.xml)
 
 `sudo sipp -sf Hold-UAC/uac-hold.xml -m 1 -s <service> -i <local_ip> <remote_ip>:<remote_port>`
 
@@ -472,6 +484,8 @@ This scenario is a little bit different from the previous one: in this case the 
 
 ### The UAS
 
+**Scenario file:** [Hold-UAS/uas-hold.xml](Hold-UAS/uas-hold.xml)
+
 You can run the UAS scenario using the command:
 
 `sipp -sf Hold-UAS/uas-hold.xml -i <local_ip> -p <local_port> -m 1`
@@ -484,6 +498,8 @@ Where:
 The scenario expects an INVITE from the UAC, after receiving the INVITE the UAS accepts the call and sends a re-INVITE with `a=sendonly`.
 
 ### The UAC
+
+**Scenario file:** [Hold-UAS/uac-hold.xml](Hold-UAS/uac-hold.xml)
 
 You can run the UAC scenario using the command:
 
@@ -499,6 +515,8 @@ Where:
 
 ## UAS MWI notification
 
+**Scenario file:** [MWI-unsolicited/uas-mwi.xml](MWI-unsolicited/uas-mwi.xml]
+
 This scenario accepts an UAC registration, the scenario accepts the REGISTER and then sends some unsolicited NOTIFY containing the MWI notification.
 
 You can run the UAS scenario using the command:
@@ -510,6 +528,8 @@ Please note that this scenario is using the same Call-ID for the REGISTER reply 
 To use this scenario with a Snom phone you can configure an identity with SIPp IP address as registrar.
 
 ## UAS BLF implementing the signalling defined by RFC4235
+
+**Scenario file:** [BLF/uas-blf-recipient.xml](BLF/uas-blf-recipient.xml)
 
 This UAS scenario implements the protocol and syntax described by [RFC 4235](https://tools.ietf.org/html/rfc4235) defining the BLF functionality
 
@@ -586,6 +606,8 @@ A               B                C
 **Note usage with a Snom Phone as UAC:** after executing the scenario you should configure a function key as a BLF monitoring the SIPp instance, Eg.: `fkey3=blf sipp@172.16.18.69`
 
 ## Call Pickup with 3PCC (Replaces header)
+
+**Scenario files:** [Call-pickup-3pcc/uac-3pcc-C-A.xml](Call-pickup-3pcc/uac-3pcc-C-A.xml) and [Call-pickup-3pcc/uac-3pcc-C-B.xml](Call-pickup-3pcc/uac-3pcc-C-B.xml) 
 
 The whole scenario need 2 SIPp instances in communication trough the [3PCC](http://sipp.sourceforge.net/doc/reference.html#3PCC) SIPp feature.
 
