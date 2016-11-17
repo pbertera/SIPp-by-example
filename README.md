@@ -23,7 +23,7 @@ This document provides some step-by-step examples using SIPp in order to emulate
 
 This document refers to some example scenario that can be found at the [SIPp-by-example](https://github.com/pbertera/SIPp-by-example).
 
-You can clone the repository using the `git` command: `git clone https://github.com/pbertera/SIPp-examples`
+You can clone the repository using the `git` command: `git clone https://github.com/pbertera/SIPp-by-example`. Every directory contains a discussed example.
 
 # SIPp main features:
 
@@ -350,6 +350,8 @@ In a `recv`, `recvCmd` or `nop` command you can execute one or more actions:
      </recv>
     </scenario> 
     ```
+
+**NOTE: Both UAC and UAS scenario can be found into the Basic folder**
 
 # Specific for SIPp and Snom phones
 
