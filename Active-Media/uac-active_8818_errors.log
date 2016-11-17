@@ -1,0 +1,2 @@
+sipp: The following events occured:
+2016-11-15	17:26:37.320759	1479227197.320759: send_packets.c: sendto failed with error: Invalid argument.

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="iso-8859-2" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="Unsolicited NOTIFY with MWI (message-summary Event)">
+  <recv request="REGISTER" crlf="true">
+   <action>
+    <ereg regexp="<(.*)>;.*" search_in="hdr" header="Contact" assign_to="trash,remote_c"/>
+   </action>
+  </recv>
+
+  <!-- since SIPp complains about not used variable reference the trach var -->
+  <Reference variables="trash"/>
+
+  <send crlf="true">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Expires: 3600
+      Content-Length: 0
+
+    ]]>
+  </send>                    
+  
+  <nop display=">>>>> received the REGISTER <<<<" crlf="true"/>
+  
+  <!-- Send unsolicited NOTIFY with MWI info (2 new/8 old messages, 0 new urgent/ 2 old urgent )        -->                         
+  <send retrans="500" crlf="true">
+    <![CDATA[
+
+      NOTIFY [$remote_c] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: <sip:[service]@[local_ip]>;tag=[call_number]
+      To: <sip:[service]@[local_ip]>
+      Call-ID: [call_id]
+      CSeq: [cseq] NOTIFY
+      Contact: sip:[local_ip]:[local_port]
+      Max-Forwards: 10
+      Event: message-summary
+      Content-Type: application/simple-message-summary
+      Content-Length: [len]
+
+      Messages-Waiting: yes
+      Message-Account: sip:[service]@[local_ip]
+      Voice-Message: 2/8 (0/2)           
+
+    ]]>
+  </send>
+
+  <recv response="200">
+  </recv>
+  
+  <nop display=">>>>> sent NOTIFY with 2 new/8 old - 0 new urgent/2 old urgent <<<<" crlf="true"/>
+    
+  <pause milliseconds="10000" />    
+  
+  <!-- Send unsolicited NOTIFY with MWI info: no messages    -->                         
+  <send retrans="500">
+    <![CDATA[
+
+      NOTIFY [$remote_c] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: <sip:[service]@[local_ip]>;tag=[call_number]
+      To: <sip:[service]@[local_ip]>
+      Call-ID: [call_id]
+      CSeq: [cseq] NOTIFY
+      Contact: sip:[local_ip]:[local_port]
+      Max-Forwards: 10
+      Event: message-summary
+      Content-Type: application/simple-message-summary
+      Content-Length: [len]
+
+      Messages-Waiting: no
+      Message-Account: sip:[service]@[local_ip]
+      Voice-Message: 0/0 (0/0)           
+
+    ]]>
+  </send>
+
+  <recv response="200">
+  </recv>  
+  
+  <nop display=">>>>> sent NOTIFY with 0 new/0 old - 0 new urgent/0 old urgent <<<<" crlf="true"/>
+
+  <pause milliseconds="10000" />    
+
+  <!-- Send unsolicited NOTIFY with MWI info (3 new/9 old messages, 1 new urgent/ 1 old urgent )        -->                         
+  <send retrans="500">
+    <![CDATA[
+
+      NOTIFY [$remote_c] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: <sip:[service]@[local_ip]>;tag=[call_number]
+      To: <sip:[service]@[local_ip]>
+      Call-ID: [call_id]
+      CSeq: [cseq] NOTIFY
+      Contact: sip:[local_ip]:[local_port]
+      Max-Forwards: 10
+      Event: message-summary
+      Content-Type: application/simple-message-summary
+      Content-Length: [len]
+
+      Messages-Waiting: yes
+      Message-Account: sip:[service]@[local_ip]
+      Voice-Message: 3/9 (1/1)           
+
+    ]]>
+  </send>
+
+  <recv response="200">
+  </recv>  
+  
+  <nop display=">>>>> sent NOTIFY with 3 new/9 old - 1 new urgent/1 old urgent <<<<" crlf="true"/>
+  
+  <pause milliseconds="10000" />    
+  
+  <!-- Send unsolicited NOTIFY with MWI info: no messages    -->                         
+  <send retrans="500">
+    <![CDATA[
+
+      NOTIFY [$remote_c] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: <sip:[service]@[local_ip]>;tag=[call_number]
+      To: <sip:[service]@[local_ip]>
+      Call-ID: [call_id]
+      CSeq: [cseq] NOTIFY
+      Contact: sip:[local_ip]:[local_port]
+      Max-Forwards: 10
+      Event: message-summary
+      Content-Type: application/simple-message-summary
+      Content-Length: [len]
+
+      Messages-Waiting: no
+      Message-Account: sip:[service]@[local_ip]
+      Voice-Message: 0/0 (0/0)           
+
+    ]]>
+  </send>
+
+  <recv response="200">
+  </recv>    
+  
+  <nop display=">>>>> sent NOTIFY with 0 new/0 old - 0 new urgent/0 old urgent <<<<" crlf="true"/>
+
+</scenario>

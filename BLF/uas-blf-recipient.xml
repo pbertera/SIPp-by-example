@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="BLF NOTIFY">
+  <!-- Receive the SUBSCRIBE from the UAS -->
+  <recv request="SUBSCRIBE" crlf="true">
+    <action>
+       <!-- extract the SIP URI form the Contact header -->
+       <!-- The SIP URI is into the uac_uri variable -->
+       <!-- trash variable contains the whole header -->
+       <ereg regexp="sip:(.*)>" search_in="hdr" header="Contact" assign_to="trash,uac_uri"/>
+    </action>
+  </recv>
+  <!-- Since SIPp complains about unused variables trash must be referenced -->
+  <Reference variables="trash"/>
+
+  <!-- Accept the SUBSCRIBE -->
+
+  <send>
+    <![CDATA[
+
+      SIP/2.0 202 Accepted
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:sipp@[local_ip]:[local_port]>
+      Content-Length: 0
+    ]]>
+  </send>
+
+  <pause milliseconds="3000"/>
+  
+  <nop display=">>>>> Accepted <<<<<"/>
+
+  <!-- After accepting the subscribe sends the inital state with no dialogs -->
+  <send retrans="500">
+    <![CDATA[
+      NOTIFY sip:[$uac_uri] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];rport;branch=[branch]
+      From: sipp <sip:sipp@[local_ip]>;tag=[call_number]
+      To: "[service]" <sip:[service]@[local_ip]>
+      [last_Call-ID:]
+      Cseq: [cseq] NOTIFY
+      Max-Forwards: 70
+      Event: dialog 
+      Subscription-State: active
+      Content-Type: application/dialog-info+xml
+      Content-Length: [len]
+
+      <?xml version="1.0"?>
+      <dialog-info xmlns="urn:ietf:params:xml:ns:dialog-info" version="0" state="full" entity="sip:[service]@[local_ip]"></dialog-info>
+    ]]>
+  </send>
+
+  <recv response="200">
+  </recv>
+  
+  <nop display=">>>>> Initial state <<<<<"/>
+   
+   <!-- call from 131 to 124 -->
+   <!-- Monitored extension receives an incoming dialog -->
+   <pause milliseconds="5000"/>
+
+   <send retrans="500">
+    <![CDATA[
+      NOTIFY sip:[$uac_uri] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];rport;branch=[branch]
+      From: sipp <sip:sipp@[local_ip]>;tag=[call_number]
+      To: "[service]" <sip:[service]@[local_ip]>;tag=1
+      [last_Call-ID:]
+      Cseq: [cseq] NOTIFY
+      Max-Forwards: 70
+      Event: dialog 
+      Subscription-State: active
+      Content-Type: application/dialog-info+xml
+      Content-Length: [len]
+      
+
+      <?xml version="1.0"?>
+      <dialog-info xmlns="urn:ietf:params:xml:ns:dialog-info" version="1" state="full" entity="sip:[service]@[local_ip]">
+        <dialog id="XYZ" direction='recipient' call-id='1234' local-tag="abc" remote-tag="def">
+            <state>early</state>
+            <local>
+                <identity display="[local_display]">[local_identity]</identity>
+                <target uri="[local_uri]"/>
+            </local>
+            <remote>
+                <identity display="[remote_display]">[remote_identity]</identity>
+                <target uri="[target_uri]"/>
+            </remote>
+          </dialog>
+       </dialog-info>
+    ]]>
+   </send>
+  
+   <recv response="200">
+   </recv>
+  
+  <nop display=">>>>> Early state <<<<<"/>
+
+   <!-- monitored extension answers the call -->
+  <pause milliseconds="5000"/>
+
+   <send retrans="500">
+    <![CDATA[
+      NOTIFY sip:[$uac_uri] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];rport;branch=[branch]
+      From: sipp <sip:sipp@[local_ip]>;tag=[call_number]
+      To: "[service]" <sip:[service]@[local_ip]>;tag=1
+      [last_Call-ID:]
+      Cseq: [cseq] NOTIFY
+      Max-Forwards: 70
+      Event: dialog 
+      Subscription-State: active
+      Content-Type: application/dialog-info+xml
+      Content-Length: [len]
+
+      <?xml version="1.0"?>
+      <dialog-info xmlns="urn:ietf:params:xml:ns:dialog-info" version="2" state="full" entity="sip:[service]@[local_ip]">
+        <dialog id="XYZ" direction='recipient' call-id='1234' local-tag="abc" remote-tag="def">
+            <state>confirmed</state>
+            <local>
+                <identity display="[local_display]">[local_identity]</identity>
+                <target uri="[local_uri]"/>
+            </local>
+            <remote>
+                <identity display="[remote_display]">[remote_identity]</identity>
+                <target uri="[target_uri]"/>
+            </remote>
+          </dialog>
+       </dialog-info>
+   ]]>
+   </send>
+   <recv response="200">
+   </recv>
+   
+  <nop display=">>>>> Confirmed state <<<<<"/>
+
+    <!-- the monitored extension received the first response (see the remote tag) -->
+  <pause milliseconds="5000"/>
+
+   <send retrans="500">
+    <![CDATA[
+      NOTIFY sip:[$uac_uri] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];rport;branch=[branch]
+      From: sipp <sip:sipp@[local_ip]>;tag=[call_number]
+      To: "[service]" <sip:[service]@[local_ip]>;tag=1
+      [last_Call-ID:]
+      Cseq: [cseq] NOTIFY
+      Max-Forwards: 70
+      Event: dialog 
+      Subscription-State: active
+      Content-Type: application/dialog-info+xml
+      Content-Length: [len]
+
+      <?xml version="1.0"?>
+      <dialog-info xmlns="urn:ietf:params:xml:ns:dialog-info" version="2" state="full" entity="sip:[service]@[local_ip]">
+        <dialog id="XYZ" direction='recipient' call-id='1234' local-tag="abc" remote-tag="def">
+            <state>terminated</state>
+            <local>
+                <identity display="[local_display]">[local_identity]</identity>
+                <target uri="[local_uri]"/>
+            </local>
+            <remote>
+                <identity display="[remote_display]">[remote_identity]</identity>
+                <target uri="[target_uri]"/>
+            </remote>
+          </dialog>
+       </dialog-info>
+   ]]>
+   </send>
+   <recv response="200">
+   </recv>
+  
+  <nop display=">>>>> Terminated state <<<<<"/>
+  
+  <pause milliseconds="2000"/>
+
+  <!-- definition of the response time repartition table (unit is ms)   -->
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+
+  <!-- definition of the call length repartition table (unit is ms)     -->
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
+
+</scenario>
+

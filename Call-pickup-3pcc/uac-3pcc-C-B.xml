@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+<scenario name="UAC with media">
+    <!-- wait for the command from the 1st SIPp instance and parse the message creating the $callid, $localtag end $remotetag vars-->
+    <recvCmd>
+        <action>
+            <ereg regexp="Call-ID: new_([^\r]+)\r" search_in="msg" assign_to="1,callid" check_it="true"/>
+            <ereg regexp="Local-tag: ([^\r]+)\r" search_in="msg" assign_to="1,localtag" check_it="true"/>
+            <ereg regexp="Remote-tag: ;tag=([^\r]+)\r" search_in="msg" assign_to="1,remotetag" check_it="true"/>
+            <log message="Call-ID: [$callid]"/>
+            <log message="Local-tag: [$localtag]"/>
+            <log message="Remote-tag: [$remotetag]"/>
+            <!-- just log the [$1] otherwise SIPp complains that $1 isn't used -->
+            <log message="=======\nAll: [$1]\n======="/>
+        </action>
+    </recvCmd> 
+  
+  <nop display="Received command"/>  
+  <!-- send INVITE containing the Replaces header-->
+  <send retrans="500">
+    <![CDATA[
+      INVITE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      Record-Route: <sip:[local_ip]:[local_port];lr>
+      From: sipp B <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+      To: <sip:[service]@[remote_ip]:[remote_port];line=11594>
+      Call-ID: [call_id]
+      CSeq: 2 INVITE
+      Replaces: [$callid];to-tag=[$localtag];from-tag=[$remotetag]
+      Max-Forwards: 70
+      Allow: INVITE, ACK, CANCEL, BYE, REFER, PRACK, INFO, UPDATE
+      Contact: <sip:sipp@[local_ip]:[local_port];transport=udp>
+      Supported: replaces
+      Content-Length: [len]
+      Content-Type: application/sdp
+
+      v=0
+      o=root 1035771577 1035771577 IN IP4 [local_ip]
+      s=call
+      c=IN IP4 [local_ip]
+      t=0 0
+      m=audio [auto_media_port] RTP/AVP 8 
+      c=IN IP[local_ip_type] [local_ip]
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:101 telephone-event/8000
+      a=fmtp:101 0-15
+      a=sendrecv
+      a=rtcp:RC5
+      a=ptime:20
+    ]]>
+  </send>
+
+  <recv response="100" optional="true"/>
+  
+  <recv response="180"/>
+  
+  <pause milliseconds="3000"/>
+  
+  <!--
+  <nop display="Remotely answering pressing the ENTER key">
+   <action>
+     <exec command="curl -s http://[remote_ip]/command.htm?key=ENTER > /dev/null"/>
+   </action>
+  </nop>
+  -->
+
+  <recv response="200"/>
+
+  <send crlf="true">
+    <![CDATA[
+      ACK sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      Record-Route: <sip:[local_ip]:[local_port];lr>
+      From: sipp[call_number] <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+      To: sut <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+      Call-ID: [call_id]
+      CSeq: 2 ACK
+      Contact: <sip:sipp@[local_ip]:[local_port];transport=udp>
+      Max-Forwards: 70
+      Content-Length: 0
+    ]]>
+  </send>
+
+  <nop display="Waiting for the BYE from UAC"/>
+  <recv request="BYE">
+  </recv>
+
+  <send>
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Length: 0
+
+    ]]>
+  </send>
+</scenario>

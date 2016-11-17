@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+<scenario name="UAC with media">
+  <!-- send the first INVITE -->
+  <send retrans="500">
+    <![CDATA[
+      INVITE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      Record-Route: <sip:[local_ip]:[local_port];lr>
+      From: sipp A <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+      To: <sip:[service]@[remote_ip]:[remote_port];line=11594>
+      Call-ID: [call_id]
+      CSeq: 1 INVITE
+      Max-Forwards: 70
+      Allow: INVITE, ACK, CANCEL, BYE, REFER, PRACK, INFO, UPDATE
+      Contact: <sip:sipp@[local_ip]:[local_port];transport=udp>
+      Supported: replaces
+      Content-Length: [len]
+      Content-Type: application/sdp
+
+      v=0
+      o=root 1035771577 1035771577 IN IP4 [local_ip]
+      s=call
+      c=IN IP4 [local_ip]
+      t=0 0
+      m=audio [auto_media_port] RTP/AVP 8
+      c=IN IP[local_ip_type] [local_ip]
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:101 telephone-event/8000
+      a=fmtp:101 0-15
+      a=sendrecv
+      a=ptime:20
+    ]]>
+  </send>
+
+  <recv response="100" optional="true"/>
+  <recv response="180" crlf="true"/>
+  
+  <nop display="Received 180 Ringing" crlf="true"/>
+  
+  <pause milliseconds="3000"/>
+  
+  <!-- send the command to the 2nd SIPp instance ( scenario file 3pcc-C-B.xml )-->
+  <sendCmd crlf="true">
+    <![CDATA[
+        Call-ID: new_[call_id]
+        Local-tag: [call_number]
+        Remote-tag: [peer_tag_param]
+        New-call: yes
+    ]]>
+  </sendCmd>
+  
+  <nop display="Sent command to B instance" crlf="true"/>
+
+  <recv request="BYE">
+  </recv>
+
+  <send>
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Length: 0
+
+    ]]>
+  </send>
+  
+  <!-- definition of the response time repartition table (unit is ms)   -->
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+  <!-- definition of the call length repartition table (unit is ms)     -->
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
+
+</scenario>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="Basic UAS responder">
+  <recv request="INVITE" crlf="true">
+  </recv>
+
+  <send>
+    <![CDATA[
+
+      SIP/2.0 180 Ringing
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=sipp 87308505 1 IN IP[local_ip_type] [local_ip]
+      s=-
+      t=0 0
+      m=audio [media_port] RTP/AVP 8 101
+      c=IN IP[media_ip_type] [media_ip]
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:101 telephone-event/8000
+      a=fmtp:101 0-15
+      a=ptime:20
+
+    ]]>
+  </send>
+
+  <recv request="ACK" crlf="true">
+  </recv>
+
+  <nop display=">>>> Sending media <<<<<" crlf="true">
+    <action>
+        <exec play_pcap_audio="../pcap/g711a.pcap"/>
+    </action>
+  </nop>
+
+  <!-- the call hold is received with a=sendonly -->
+  <recv request="INVITE" rtd="true" crlf="true">
+  </recv>
+  
+  <nop display=">>>>> Received hold re-INVITE <<<<" crlf="true">
+  </nop>
+
+  <!-- answer with SDP with a=recvonly -->
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=sipp 87308505 2 IN IP[local_ip_type] [local_ip]
+      s=-
+      t=0 0
+      m=audio [media_port] RTP/AVP 8 101
+      c=IN IP[media_ip_type] [media_ip]
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:101 telephone-event/8000
+      a=fmtp:101 0-15
+      a=ptime:20
+      a=recvonly
+    ]]>
+  </send>
+
+  <recv request="ACK">
+  </recv>
+
+  <!-- receive the call retrieve with a=sendrecv -->
+  <recv request="INVITE" rtd="true" crlf="true">
+  </recv>
+
+  <nop display=">>>>> Received retreive re-INVITE <<<<<" crlf="true">
+  </nop>
+  
+  <!-- accept the re-INVITE with a=sendrecv -->
+  <send retrans="500">
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:];tag=[call_number]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=sipp 87308505 2 IN IP[local_ip_type] [local_ip]
+      s=-
+      t=0 0
+      m=audio [media_port] RTP/AVP 8 101
+      c=IN IP[media_ip_type] [media_ip]
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:101 telephone-event/8000
+      a=fmtp:101 0-15
+      a=ptime:20
+      a=sendrecv
+    ]]>
+  </send>
+
+  <recv request="ACK">
+  </recv>
+
+
+  <recv request="BYE">
+  </recv>
+
+  <send>
+    <![CDATA[
+
+      SIP/2.0 200 OK
+      [last_Via:]
+      [last_From:]
+      [last_To:]
+      [last_Call-ID:]
+      [last_CSeq:]
+      Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!-- Keep the call open for a while in case the 200 is lost to be     -->
+  <!-- able to retransmit it if we receive the BYE again.               -->
+  <pause milliseconds="2000"/>
+
+</scenario>
