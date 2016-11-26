@@ -16,12 +16,12 @@ This document provides some step-by-step examples using SIPp in order to emulate
     - Ethernet card (10/100 or Gigabit)
     - Supported operating systems: GNU/Linux, Mac OSX > 10.4
     - You must have administrator privileges
-    - [Wireshark](https://www.wireshark.org)installed
+    - [Wireshark](https://www.wireshark.org) installed
     - SIPp installed (scenario are tested with SIPp v3.5.1 with `PCAP` and `RTPSTREAM` features)
 
 ### How to work with the example code
 
-This document refers to some example scenario that can be found at the [SIPp-by-example](https://github.com/pbertera/SIPp-by-example).
+This document refers to some example scenario that can be found in this repository.
 
 You can clone the repository using the `git` command: `git clone https://github.com/pbertera/SIPp-by-example`. Every directory contains a discussed example.
 
@@ -353,7 +353,7 @@ In a `recv`, `recvCmd` or `nop` command you can execute one or more actions:
 
 **NOTE: Both UAC and UAS scenario can be found into the Basic folder: [Basic/uac.xml](Basic/uac.xml) and [Basic/uas.xml](Basic/uas.xml)**
 
-# Specific for SIPp and Snom phones
+# Specific settings for SIPp and Snom phones
 
 If you want to run and UAC against a Snom phone (calling the phone from SIPp), you should pay attention the following points:
 
