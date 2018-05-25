@@ -366,6 +366,34 @@ If you want to call an UAS scenario from a Snom phone the simplest way is to con
 
 # Some sample scenario
 
+## SIP Call with re-INVITE
+
+This scenario is quite similar to the basic described before: UAC sends an INVITE containing the SDP offer, once the dialog is established the UAC sends an in-dialog INVITE.
+
+### The UAS
+
+**Scenario file:** [reINVITE-PAI/uas.xml](reINVITE-PAI/uas.xml)
+
+`./sipp -sf reINVITE-PAI/uas.xml -i <local_ip> -p <local_port> -m 1`
+
+Where:
+
+* **<local_ip>** is the local IP address
+* **<local_port** is the local SIP port
+
+### The UAC
+
+**Scenario file:** [reINVITE-PAI/uac-active.xml](reINVITE-PAI/uac-active.xml)
+
+`sipp -sf reINVITE-PAI/uac-active.xml -m 1 -s <service> -i <local_ip> <remote_ip>:<remote_port>`
+
+Where:
+
+* **<local_ip>** is the local IP address
+* **<remote_ip>** is the remote IP address
+* **<remote_port>** is the remote port
+* **<service>** is the called service, if you are calling a phone should be username.
+
 ## Active Media call scenario
 
 The folder [Active-Media](Active-Media) contains UAS and UAC scenarios for Active media negotiation (SDP offer sent into the INVITE request).
