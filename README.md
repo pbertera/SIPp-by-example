@@ -23,7 +23,7 @@ This document provides some step-by-step examples using SIPp in order to emulate
 
 This document refers to some example scenario that can be found in this repository.
 
-You can clone the repository using the `git` command: `git clone https://github.com/pbertera/SIPp-by-example`. Every directory contains a discussed example.
+You can clone the repository using the `git` command: `git clone https://github.com/pchero/sipp-examples`. Every directory contains a discussed example.
 
 # SIPp main features:
 
