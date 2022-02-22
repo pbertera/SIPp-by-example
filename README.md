@@ -1,12 +1,3 @@
-* Control channel
-* RTP echo
-* PCAP playback
-
-The tool was originally developed by Hewlett-Packard, now is maintained by an OSS community on Github
-
-Here some important online resources:
-
-* Main documentation [reference](http://sipp.sourceforge.net/doc3.3/reference.html/)
 * Project homepage on [github](https://github.com/SIPp/sipp)
 * [Mailing list](https://lists.sourceforge.net/lists/listinfo/sipp-users)
 
