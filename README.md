@@ -1,25 +1,3 @@
-## Requirements:
-
-**IMPORTANT: In order to execute all the examples, you will need:**
-
-- A computer with SIPp installed
-- A SIP Proxy ([SPLiT](https://github.com/pbertera/SPLiT) or other)
-- One or more Snom phone.
-- A file editor; one with XML syntax highlighting and validation support is preferred
-- A computer equipped with:
-    - Ethernet card (10/100 or Gigabit)
-    - Supported operating systems: GNU/Linux, Mac OSX > 10.4
-    - You must have administrator privileges
-    - [Wireshark](https://www.wireshark.org) installed
-    - SIPp installed (scenario are tested with SIPp v3.5.1 with `PCAP` and `RTPSTREAM` features)
-
-### How to work with the example code
-
-This document refers to some example scenario that can be found in this repository.
-
-You can clone the repository using the `git` command: `git clone https://github.com/pbertera/SIPp-by-example`. Every directory contains a discussed example.
-
-# SIPp main features:
 
 **SIPp** is a tool originally developed to benchmark SIP proxy and UAs. SIPp provides a list of complex features like
 
