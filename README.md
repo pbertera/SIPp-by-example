@@ -1,9 +1,3 @@
-# SIPp by Examples
-
-## Introduction
-
-This document provides some step-by-step examples using SIPp in order to emulate different call scenarios.
-
 ## Requirements:
 
 **IMPORTANT: In order to execute all the examples, you will need:**
