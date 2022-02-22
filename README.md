@@ -1,9 +1,3 @@
-
-**SIPp** is a tool originally developed to benchmark SIP proxy and UAs. SIPp provides a list of complex features like
-
-* Builtin scenarios
-* Custom XML-defined scenarios
-* Statistics generation
 * Control channel
 * RTP echo
 * PCAP playback
