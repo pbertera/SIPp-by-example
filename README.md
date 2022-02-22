@@ -1,14 +1,3 @@
-* Project homepage on [github](https://github.com/SIPp/sipp)
-* [Mailing list](https://lists.sourceforge.net/lists/listinfo/sipp-users)
-
-# Basic concepts
-
-SIPp is a tool capable the send and receive SIP messages, can operate both as a UAC and UAS. The message exchange must be defined in a scenario file.
-
-One of the biggest SIPp limitations is that the tool can handle only one SIP dialog (one Call-ID) in a scenario, however there is some workaround that can be adopted in some situations.
-
-## SIPp command line options:
-
 Following a list of the most common command line options. You can obtain the full list executing the command `sipp -h`.
 
 ##### Scenario options
