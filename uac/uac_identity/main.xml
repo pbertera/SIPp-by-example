@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scenario name="Basic UAC scenario">
+ <send>
+  <![CDATA[  
+  INVITE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+  Via: SIP/2.0/[transport] [local_ip]:[local_port]
+  From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+  To: sut <sip:[service]@[remote_ip]:[remote_port]>
+  Call-ID: [call_id]
+  Cseq: 1 INVITE
+  Identity: eyJhbGciOiJFUzI1NiIsInBwdCI6InNoYWtlbiIsInR5cCI6InBhc3Nwb3J0IiwieDV1IjoiaHR0cHM6Ly9jZXJ0aWZpY2F0ZXMuY2xlYXJpcC5jb20vMTExMjQxNzctNzlmMy00OGIyLTg2N2EtMzg2ZDRkYzYxYzk5LzJlZGRiNDE4MDY0MDIyMzE5OWQzI5NDY1OTNlZDU0LnBlbSJ9.eyJhdHRlc3QiOiJBIiwiZGVzdCI6eyJ0biI6WyIxOTE3NzQ2NDQ3MCJdfSwiaWF0IjoxNjUwMDQ1NTk0LCJvcmlnIjp7InRuIjoiMTQ3MDU1MjM5MjUifSwib3JpZ2lkIjoiY2RjZDJhNDMtOTU3Zi00YWJkLWEwZjgtMDk0YzhlMGRmYhIn0.fCvbnu57nzxGI2tGfrbpqABWcxx_nLfEtU-DCJNZZPxamx9bG-_7rrEPp1FkQ-9QILqvb2XTGZvxoXK9YbLzXQ;info=<https://certificates.clearip.com/11124177-79f3-48b2-867a-386d4dc61c99/2eddb4180640223199d1c2946593ed54.m>;alg=ES256;ppt=shaken
+  Contact: sip:sipp@[local_ip]:[local_port]
+  Content-Type: application/sdp
+  Content-Length: [len]
+  
+  v=0
+  o=user1 53655765 2353687637 IN IP[local_ip_type] [local_ip]
+  s=-
+  t=0 0
+  c=IN IP[media_ip_type] [media_ip]
+  m=audio [media_port] RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+  ]]>
+ </send>
+
+ <recv response="100" optional="true">
+ </recv>
+ 
+ <recv response="180" optional="true">
+ </recv>
+ 
+ <recv response="200">
+ </recv>
+
+ <send>
+  <![CDATA[
+  ACK sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+  Via: SIP/2.0/[transport] [local_ip]:[local_port]
+  From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+  To: sut <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+  Call-ID: [call_id]
+  Cseq: 1 ACK
+  Contact: sip:sipp@[local_ip]:[local_port]
+  Content-Length: 0
+  ]]>
+ </send>
+
+ <pause milliseconds="5000"/>
+
+ <send retrans="500">
+  <![CDATA[
+  BYE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+  Via: SIP/2.0/[transport] [local_ip]:[local_port]
+  From: sipp  <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+  To: sut  <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+  Call-ID: [call_id]
+  Cseq: 2 BYE
+  Contact: sip:sipp@[local_ip]:[local_port]
+  Content-Length: 0
+  ]]>
+ </send>
+
+ <recv response="200">
+ </recv>
+
+</scenario>
