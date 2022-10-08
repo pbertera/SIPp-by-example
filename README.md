@@ -1,13 +1,16 @@
-# SIPp by Examples
+# SIPp examples
+SiPp examples
 
 ## Introduction
-
 This document provides some step-by-step examples using SIPp in order to emulate different call scenarios.
+
+## Directories
+* uac: client examples.
+* uas: server examples.
 
 ## Requirements:
 
 **IMPORTANT: In order to execute all the examples, you will need:**
-
 - A computer with SIPp installed
 - A SIP Proxy ([SPLiT](https://github.com/pbertera/SPLiT) or other)
 - One or more Snom phone.
