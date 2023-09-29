@@ -57,11 +57,9 @@
     </send>
 
     <recv request="ACK"
-        optional="true"
         rtd="true"
         crlf="true">
     </recv>
-
 
     <pause milliseconds="5000"/>
 
