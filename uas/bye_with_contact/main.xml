@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<scenario name="Basic UAS responder">
+<scenario>
     <!-- By adding rrs="true" (Record Route Sets), the route sets         -->
     <!-- are saved and used for following messages sent. Useful to test   -->
     <!-- against stateful SIP proxies/B2BUAs.                             -->
     <recv request="INVITE" crlf="true" rrs="true">
         <action>
+            <!-- since we need to send a request to the remote part -->
+            <!-- we need to extract the Contact and the From/To header content -->
+            <ereg regexp=".*" search_in="hdr" header="From" assign_to="remote_from"/>
+            <ereg regexp=".*" search_in="hdr" header="To" assign_to="remote_to"/>
+
             <!-- assign the content of the Contaact SIP URI to the remote_contact var -->
             <!-- first var of assign_to contains the whole match -->
             <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash,remote_contact"/>
-                <!-- <assignstr assign_to="lvia" value="[last_Via:]" /> -->
-
         </action>
     </recv>
 
@@ -78,8 +81,8 @@
         BYE sip:[$remote_contact] SIP/2.0
         [routes]
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
-        [last_To:];tag=[call_number]
-        [last_From:]
+        To: [$remote_from]
+        From: [$remote_to];tag=[call_number]
         [last_Call-ID:]
         CSeq: [cseq] BYE
         Contact: sip:sipp@[local_ip]:[local_port]
