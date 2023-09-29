@@ -80,7 +80,6 @@
         <![CDATA[
         BYE sip:[$remote_contact] SIP/2.0
         [routes]
-        Via: SIP/2.0/[transport] [local_ip]:[local_port]
         To: [$remote_from]
         From: [$remote_to];tag=[call_number]
         [last_Call-ID:]
