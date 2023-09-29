@@ -10,6 +10,9 @@
             <ereg regexp=".*" search_in="hdr" header="From" assign_to="remote_from"/>
             <ereg regexp=".*" search_in="hdr" header="To" assign_to="remote_to"/>
 
+            <assignstr assign_to="lvia" value="[last_Via:]" />
+
+
             <!-- assign the content of the Contaact SIP URI to the remote_contact var -->
             <!-- first var of assign_to contains the whole match -->
             <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash,remote_contact"/>
@@ -81,8 +84,8 @@
         BYE sip:[$remote_contact] SIP/2.0
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
         [routes]
-        To: [$remote_from]
-        From: [$remote_to];tag=[call_number]
+        To[$remote_from]
+        From[$remote_to];tag=[call_number]
         [last_Call-ID:]
         CSeq: [cseq] BYE
         Max-Forwards: 32
