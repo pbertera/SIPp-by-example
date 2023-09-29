@@ -75,7 +75,7 @@
 
     <send retrans="500">
         <![CDATA[
-        BYE [$remote_contact] SIP/2.0
+        BYE sip:[$remote_contact] SIP/2.0
         [routes]
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
         [last_To:];tag=[call_number]
