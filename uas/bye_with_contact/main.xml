@@ -84,6 +84,7 @@
         From: [$remote_to];tag=[call_number]
         [last_Call-ID:]
         CSeq: [cseq] BYE
+        Max-Forwards: 32
         Contact: <sip:[local_ip]:[local_port];transport=[transport]>
         Content-Length: 0
         ]]>
