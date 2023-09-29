@@ -36,7 +36,6 @@
         <![CDATA[
 
         SIP/2.0 200 OK
-        [routes]
         [last_Via:]
         [last_From:]
         [last_To:];tag=[call_number]
@@ -63,23 +62,26 @@
         crlf="true">
     </recv>
 
-    <recv request="BYE">
-    </recv>
 
-    <send>
-    <![CDATA[
+    <pause milliseconds="5000"/>
 
-        SIP/2.0 200 OK
-        [last_Via:]
+    <send retrans="500">
+        <![CDATA[
+        BYE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+        [routes]
+        Via: SIP/2.0/[transport] [local_ip]:[local_port]
+        [last_To:];tag=[call_number]
         [last_From:]
-        [last_To:]
         [last_Call-ID:]
         [last_CSeq:]
-        Contact: <sip:[local_ip]:[local_port];transport=[transport]>
+        Contact: sip:sipp@[local_ip]:[local_port]
         Content-Length: 0
-
-    ]]>
+        ]]>
     </send>
+
+    <recv response="200">
+    </recv>
+
 
     <!-- Keep the call open for a while in case the 200 is lost to be     -->
     <!-- able to retransmit it if we receive the BYE again.               -->
