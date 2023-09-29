@@ -10,16 +10,13 @@
             <ereg regexp=".*" search_in="hdr" header="From" assign_to="remote_from"/>
             <ereg regexp=".*" search_in="hdr" header="To" assign_to="remote_to"/>
 
-            <assignstr assign_to="lvia" value="[last_Via:]" />
-
-
             <!-- assign the content of the Contaact SIP URI to the remote_contact var -->
             <!-- first var of assign_to contains the whole match -->
-            <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash,remote_contact"/>
+            <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash_contact,remote_contact"/>
         </action>
     </recv>
 
-    <Reference variables="trash"/>
+    <Reference variables="trash_contact"/>
 
 
     <!-- The '[last_*]' keyword is replaced automatically by the          -->
