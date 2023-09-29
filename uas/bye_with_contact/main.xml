@@ -4,6 +4,11 @@
     <!-- are saved and used for following messages sent. Useful to test   -->
     <!-- against stateful SIP proxies/B2BUAs.                             -->
     <recv request="INVITE" crlf="true" rrs="true">
+        <action>
+            <!-- assign the content of the Contaact SIP URI to the remote_contact var -->
+            <!-- first var of assign_to contains the whole match -->
+            <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="remote_contact"/>
+        </action>
     </recv>
 
     <!-- The '[last_*]' keyword is replaced automatically by the          -->
@@ -61,17 +66,17 @@
         crlf="true">
     </recv>
 
-    <pause milliseconds="5000"/>
+    <pause milliseconds="3000"/>
 
     <send retrans="500">
         <![CDATA[
-        BYE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+        BYE [$remote_contact] SIP/2.0
         [routes]
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
         [last_To:];tag=[call_number]
         [last_From:]
         [last_Call-ID:]
-        [last_CSeq:]
+        CSeq: [cseq] BYE
         Contact: sip:sipp@[local_ip]:[local_port]
         Content-Length: 0
         ]]>
