@@ -15,7 +15,7 @@
  
  <Reference variables="trash"/>
 
- <send retrans="500">
+ <send retrans="500" rrs="true">
   <![CDATA[
   SIP/2.0 200 OK
   [last_Record-Route:]
@@ -38,7 +38,7 @@
   ]]>
  </send>
 
- <recv request="ACK" optional="true" crlf="true">
+ <recv request="ACK" crlf="true">
  </recv>
 
  <label id="send_bye"/>
@@ -46,10 +46,11 @@
  <send retrans="500">
   <![CDATA[
   BYE [$remote_contact] SIP/2.0
+  [routes]
   Via: SIP/2.0/[transport] [local_ip]:[local_port]
   From: sipp  <sip:sipp@[local_ip]:[local_port]>;tag=[pid]SIPpTag01[call_number]
   To: [$remote_from]
-  Call-ID: [call_id]
+  [last_Call-ID:]
   Cseq: 2 BYE
   Contact: sip:sipp@[local_ip]:[local_port]
   Content-Length: 0
