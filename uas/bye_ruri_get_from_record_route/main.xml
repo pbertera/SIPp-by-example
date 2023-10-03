@@ -13,7 +13,7 @@
             <!-- assign the content of the Contaact SIP URI to the remote_contact var -->
             <!-- first var of assign_to contains the whole match -->
             <!-- <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash_contact,remote_contact"/> -->
-            <!-- <ereg regexp=".*(sip:.*)>" search_in="hdr" header="Record-Route" assign_to="trash_record_route,remote_record_route"/> -->
+            <ereg regexp=".*(sip:.*)>" search_in="hdr" header="Record-Route" assign_to="trash_record_route,remote_record_route"/>
 
             <!-- <ereg regexp=".*(sip:[0-9]{3}.[0-9]{3}.[0-9]{3}.[0-9]{3}:[0-9]{5});.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_sip,remote_record_route_sip"/> -->
             <!-- <ereg regexp=".*(;alias=.*);.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_alias,remote_record_route_alias"/> -->
@@ -21,7 +21,7 @@
     </recv>
 
     <!-- <Reference variables="trash_contact"/> -->
-    <!-- <Reference variables="trash_record_route"/> -->
+    <Reference variables="trash_record_route"/>
     <!-- <Reference variables="trash_record_route_alias"/> -->
     <!-- <Reference variables="trash_record_route_alias"/> -->
 
@@ -83,9 +83,10 @@
 
     <pause milliseconds="3000"/>
 
+        <!-- BYE sip:35.196.62.91:5060;alias=10.75.0.93~5060~1 SIP/2.0 -->
     <send retrans="500">
         <![CDATA[
-        BYE sip:35.196.62.91:5060;alias=10.75.0.93~5060~1 SIP/2.0
+        BYE [$remote_record_route] SIP/2.0
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
         [routes]
         To[$remote_from]
