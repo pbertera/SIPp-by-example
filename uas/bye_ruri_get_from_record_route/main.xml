@@ -16,13 +16,13 @@
             <!-- <ereg regexp=".*(sip:.*)>" search_in="hdr" header="Record-Route" assign_to="trash_record_route,remote_record_route"/> -->
 
             <!-- <ereg regexp=".*(sip:[0-9]{3}.[0-9]{3}.[0-9]{3}.[0-9]{3}:[0-9]{5});.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_sip,remote_record_route_sip"/> -->
-            <!-- <ereg regexp=".*(;alias=.*);.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_alias,remote_record_route_alias"/> -->
+            <ereg regexp=".*(;alias=.*);.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_alias,remote_record_route_alias"/>
         </action>
     </recv>
 
     <!-- <Reference variables="trash_contact"/> -->
     <!-- <Reference variables="trash_record_route"/> -->
-    <!-- <Reference variables="trash_record_route_alias"/> -->
+    <Reference variables="trash_record_route_alias"/>
     <!-- <Reference variables="trash_record_route_alias"/> -->
 
 
@@ -85,7 +85,7 @@
 
     <send retrans="500">
         <![CDATA[
-        BYE sip:35.196.62.91:5060 SIP/2.0
+        BYE sip:35.196.62.91:5060[$remote_record_route_alias] SIP/2.0
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
         [routes]
         To[$remote_from]
