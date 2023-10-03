@@ -83,7 +83,6 @@
 
     <pause milliseconds="3000"/>
 
-        <!-- BYE sip:35.196.62.91:5060;alias=10.75.0.93~5060~1 SIP/2.0 -->
     <send retrans="500">
         <![CDATA[
         BYE [$remote_record_route] SIP/2.0
