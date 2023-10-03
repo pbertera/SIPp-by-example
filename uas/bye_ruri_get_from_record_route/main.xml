@@ -14,6 +14,7 @@
             <!-- first var of assign_to contains the whole match -->
             <!-- <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash_contact,remote_contact"/> -->
             <ereg regexp="(.*)>" search_in="hdr" header="Record-Route" assign_to="trash_record_route,remote_record_route"/>
+            <log message="Record-Route is [last_Record-Route]. Custom header is [$remote_record_route]"/>
         </action>
     </recv>
 
