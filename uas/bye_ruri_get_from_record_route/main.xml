@@ -15,7 +15,7 @@
             <!-- <ereg regexp="sip:(.*)>.*" search_in="hdr" header="Contact" assign_to="trash_contact,remote_contact"/> -->
             <!-- <ereg regexp=".*(sip:.*)>" search_in="hdr" header="Record-Route" assign_to="trash_record_route,remote_record_route"/> -->
 
-            <ereg regexp=".*(sip:.*);.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_sip,remote_record_route_sip"/>
+            <ereg regexp=".*(sip:[0-9]{3}.[0-9]{3}.[0-9]{3}.[0-9]{3}:[0-9]{5});.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_sip,remote_record_route_sip"/>
             <ereg regexp=".*(;alias=.*);.*>" search_in="hdr" header="Record-Route" assign_to="trash_record_route_alias,remote_record_route_alias"/>
         </action>
     </recv>
