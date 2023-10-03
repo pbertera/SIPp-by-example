@@ -85,7 +85,7 @@
 
     <send retrans="500">
         <![CDATA[
-        BYE 35.196.62.91:5060[$remote_record_route_alias] SIP/2.0
+        BYE 35.196.62.91:5060 SIP/2.0
         Via: SIP/2.0/[transport] [local_ip]:[local_port]
         [routes]
         To[$remote_from]
